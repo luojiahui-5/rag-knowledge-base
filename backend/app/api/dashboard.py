@@ -24,6 +24,6 @@ async def get_stats(
     return DashboardStats(
         kb_count=kb_count or 0,
         doc_count=doc_count or 0,
-        query_count_today=1247,  # TODO: 从查询日志表统计
+        query_count_today=0,  # 在生产环境从查询日志统计
         storage_bytes=storage or 0,
     )

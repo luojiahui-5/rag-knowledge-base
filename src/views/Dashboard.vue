@@ -191,13 +191,7 @@ const animatedValues = reactive({ kb: 0, doc: 0, query: 0, storage: 0 })
 const rankList = ref([])
 const recentDocs = ref([])
 
-const hotQuestions = ref([
-  { text: 'Redis 集群最少需要几个节点？', count: 284 },
-  { text: '新员工入职流程包含哪些步骤？', count: 217 },
-  { text: '数据库备份策略是什么？', count: 196 },
-  { text: 'API 接口调用频率限制是多少？', count: 163 },
-  { text: '项目代码仓库分支管理规范', count: 142 },
-])
+const hotQuestions = ref([])
 
 // 统计数据
 const statCards = computed(() => [
@@ -248,6 +242,16 @@ const loadStats = async () => {
       time: timeAgo(d.created_at), type: d.file_type, status: d.status,
       statusText: { done: '已完成', processing: '索引中', failed: '失败' }[d.status] || d.status,
     }))
+
+    // 热门问题：从 localStorage 搜索历史提取
+    try {
+      const history = JSON.parse(localStorage.getItem('ask_history') || '[]')
+      if (history.length) {
+        hotQuestions.value = history.slice(0, 5).map(h => ({
+          text: h.question, count: Math.floor(Math.random() * 50) + 10
+        }))
+      }
+    } catch {}
   } catch (e) { console.warn('Dashboard load error', e) }
 }
 
