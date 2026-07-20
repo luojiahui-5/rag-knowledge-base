@@ -17,4 +17,5 @@ COPY backend/ ./backend/
 COPY --from=frontend /app/dist ./dist
 
 EXPOSE 8000
-CMD cd /app/backend && python -m uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}
+WORKDIR /app/backend
+CMD python -m uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}
