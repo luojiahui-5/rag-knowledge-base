@@ -1,0 +1,45 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p \"D:\\\\新企业级智能知识库RAG系统\\\\src\\\\views\")",
+      "Bash(start \"\" \"D:\\\\新企业级智能知识库RAG系统\\\\preview.html\")",
+      "Bash(start \"\" \"D:\\\\新企业级智能知识库RAG系统\\\\dashboard-preview.html\")",
+      "Bash(start \"\" \"http://localhost:5173\")",
+      "Bash(taskkill /F /IM node.exe)",
+      "Bash(start \"\" \"http://localhost:5174\")",
+      "Bash(python seed_admin_standalone.py)",
+      "Bash(python -c \"import sqlite3; c=sqlite3.connect\\('rag.db'\\); row=c.execute\\('SELECT username,email,display_name,role FROM users'\\).fetchone\\(\\); print\\('账号:', row[0]\\); print\\('邮箱:', row[1]\\); print\\('名称:', row[2]\\); print\\('角色:', row[3]\\); c.close\\(\\)\")",
+      "Bash(python run.py)",
+      "Bash(python -c ' *)",
+      "Bash(curl -s -X POST http://localhost:8000/api/v1/auth/login -H \"Content-Type: application/json\" -d \"{\\\\\"username\\\\\":\\\\\"admin\\\\\",\\\\\"password\\\\\":\\\\\"admin123\\\\\"}\")",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('Token:', d['access_token'][:50]+'...'\\); print\\('Role:', d['user']['role']\\); print\\('Name:', d['user']['display_name']\\)\")",
+      "Bash(curl -s https://api.deepseek.com/v1/chat/completions -H \"Authorization: Bearer sk-8b35bd845c8f4c1c9cd561a51c48ce8e\" -H \"Content-Type: application/json\" -d \"{\\\\\"model\\\\\":\\\\\"deepseek-chat\\\\\",\\\\\"messages\\\\\":[{\\\\\"role\\\\\":\\\\\"user\\\\\",\\\\\"content\\\\\":\\\\\"用一句话回答：RAG是什么？\\\\\"}],\\\\\"max_tokens\\\\\":100}\")",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(d['choices'][0]['message']['content']\\)\")",
+      "Bash(set HF_ENDPOINT=https://hf-mirror.com)",
+      "Bash(taskkill /F /FI \"WINDOWTITLE eq *uvicorn*\")",
+      "Bash(curl -s -X POST http://localhost:8000/api/v1/search -H \"Content-Type: application/json\" -H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwicm9sZSI6ImFkbWluIiwiZXhwIjo5OTk5OTk5OTk5fQ.test\" -d \"{\\\\\"query\\\\\":\\\\\"Redis集群最少几个节点？\\\\\"}\")",
+      "Bash(taskkill /F /IM python.exe)",
+      "Bash(curl -s http://localhost:8000/api/health)",
+      "Bash(netstat -ano)",
+      "Bash(echo \"exit: $?\")",
+      "Bash(taskkill /F /PID 24232)",
+      "Bash(taskkill /F /PID 15560)",
+      "Bash(curl -s http://localhost:5173/api/health)",
+      "Bash(start \"\" \"http://localhost:5176\")",
+      "Bash(python)",
+      "Bash(taskkill /F /PID 2948)",
+      "Bash(curl -s http://localhost:8002/api/health)",
+      "Bash(echo \"# Redis Deployment Guide\\\\n\\\\n## 1. Cluster Planning\\\\nRedis cluster requires at least 6 nodes \\(3 master + 3 slave\\).\\\\n\\\\n## 2. Hardware\\\\nEach node: 8 core CPU, 32GB RAM, 500GB SSD.\")",
+      "Bash(start \"\" \"http://localhost:5178\")",
+      "Bash(curl -s http://localhost:9999/api/health)",
+      "Bash(curl -s http://localhost:9999/openapi.json)",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); paths=[p for p in d.get\\('paths',{}\\).keys\\(\\) if 'chunk' in p]; print\\('Chunk paths:', paths\\)\")",
+      "Bash(start \"\" \"http://localhost:5179\")",
+      "Bash(awk '{print $NF}')",
+      "Bash(start \"\" \"http://localhost:5180\")"
+    ],
+    "additionalDirectories": [
+      "D:\\新企业级智能知识库RAG系统\\src"
+    ]
+  }
+}

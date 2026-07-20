@@ -1,0 +1,12 @@
+node_modules/
+dist/
+backend/rag.db
+backend/uploads/*
+!backend/uploads/.gitkeep
+__pycache__/
+.env
+登录页面.png
+cloudflared.exe
+*.db
+server*.log
+.claude/

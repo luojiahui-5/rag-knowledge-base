@@ -1,0 +1,18 @@
+INFO:     Started server process [3900]
+INFO:     Waiting for application startup.
+2026-07-20 15:21:07,825 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-07-20 15:21:07,825 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("users")
+2026-07-20 15:21:07,825 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-07-20 15:21:07,826 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("kb_members")
+2026-07-20 15:21:07,827 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-07-20 15:21:07,827 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("knowledge_bases")
+2026-07-20 15:21:07,827 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-07-20 15:21:07,828 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("documents")
+2026-07-20 15:21:07,839 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-07-20 15:21:07,839 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("document_chunks")
+2026-07-20 15:21:07,840 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-07-20 15:21:07,840 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     Application startup complete.
+ERROR:    [Errno 10048] error while attempting to bind on address ('0.0.0.0', 9999): [winerror 10048] 通常每个套接字地址(协议/网络地址/端口)只允许使用一次。
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.

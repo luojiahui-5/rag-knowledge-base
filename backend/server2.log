@@ -1,0 +1,20 @@
+INFO:     Will watch for changes in these directories: ['D:\\新企业级智能知识库RAG系统\\backend']
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [11148] using WatchFiles
+INFO:     Started server process [11180]
+INFO:     Waiting for application startup.
+2026-07-20 14:40:37,959 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-07-20 14:40:37,959 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("users")
+2026-07-20 14:40:37,959 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-07-20 14:40:37,961 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("kb_members")
+2026-07-20 14:40:37,961 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-07-20 14:40:37,962 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("knowledge_bases")
+2026-07-20 14:40:37,971 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-07-20 14:40:37,973 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("documents")
+2026-07-20 14:40:37,973 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-07-20 14:40:37,974 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("document_chunks")
+2026-07-20 14:40:37,974 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-07-20 14:40:37,975 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'app\api\knowledge.py'. Reloading...
+ 
