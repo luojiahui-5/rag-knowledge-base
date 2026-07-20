@@ -19,7 +19,9 @@
             </div>
             <h2 class="welcome-title">智能问答</h2>
             <p class="welcome-desc">基于企业知识库的 AI 助手，用自然语言提问即可获取精准答案</p>
-            <div class="welcome-hints">
+            <p class="welcome-start">在上方输入你的问题，开始智能问答</p>
+            <div v-if="hints.length" class="welcome-hints">
+              <span class="welcome-hints-label">试试这些问题：</span>
               <button v-for="h in hints" :key="h" class="hint-chip" @click="quickAsk(h)">{{ h }}</button>
             </div>
           </div>
@@ -189,12 +191,7 @@ const inputRef = ref(null)
 const kbList = ref([])
 const history = ref([])
 
-const hints = [
-  'Redis 集群最少需要几个节点？',
-  '系统采用什么架构？',
-  '数据库备份策略是什么？',
-  '微服务如何拆分？',
-]
+const hints = ref([])  // 从知识库文档动态生成推荐问题
 
 onMounted(async () => {
   try {
@@ -345,8 +342,10 @@ const scoreClass = (s) => {
 .welcome-icon { width: 72px; height: 72px; margin-bottom: 20px; }
 .welcome-icon svg { width: 100%; height: 100%; }
 .welcome-title { font-size: 22px; font-weight: 700; color: #e2e8f0; margin: 0 0 8px; }
-.welcome-desc { font-size: 13px; color: rgba(255,255,255,.35); margin: 0 0 28px; max-width: 400px; }
-.welcome-hints { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; max-width: 500px; }
+.welcome-desc { font-size: 13px; color: rgba(255,255,255,.35); margin: 0 0 12px; max-width: 400px; }
+.welcome-start { font-size: 13px; color: rgba(255,255,255,.2); margin: 0 0 24px; }
+.welcome-hints { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; max-width: 500px; flex-direction: column; align-items: center; }
+.welcome-hints-label { font-size: 12px; color: rgba(255,255,255,.25); margin-bottom: 8px; }
 .hint-chip { padding: 8px 16px; border-radius: 20px; font-size: 13px; color: rgba(255,255,255,.5); background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.06); cursor: pointer; transition: all .2s; font-family: inherit; }
 .hint-chip:hover { color: #8bb8ff; background: rgba(74,140,247,.08); border-color: rgba(74,140,247,.15); }
 

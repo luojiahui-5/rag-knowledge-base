@@ -6,7 +6,7 @@ from ..core.database import get_db
 from ..core.security import get_current_user
 from ..core.config import get_settings
 from ..models.user import User
-from ..models.knowledge_base import DocumentChunk, Document
+from ..models.knowledge_base import DocumentChunk, Document, QueryLog
 from ..schemas.knowledge import SearchRequest, SearchResult, SourceInfo
 from ..services.llm_service import generate_answer
 from ..services.embedding_service import embed_text, cosine_similarity
@@ -119,12 +119,21 @@ async def search(
 
     print(f"[Search DEBUG] sources count={len(sources)}, first content len={len(sources[0]['content']) if sources else 0}", flush=True)
 
-    # ========== 6. DeepSeek LLM 生成 ==========
+    # ========== 7. DeepSeek LLM 生成 ==========
     print(f"[Search] sources after assembly: {len(sources)}, context length: {sum(len(c) for c in context_parts)}")
     context = "\n\n---\n\n".join(context_parts)
     answer = await generate_answer(req.query, context, sources)
 
     latency = int((time.time() - t0) * 1000)
+
+    # 记录查询日志
+    try:
+        log = QueryLog(user_id=current_user.id, query_text=req.query, result_count=len(sources), latency_ms=latency)
+        db.add(log)
+        await db.flush()
+    except Exception:
+        pass
+
     return SearchResult(
         answer=answer,
         sources=[SourceInfo(

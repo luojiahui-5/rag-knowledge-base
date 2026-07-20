@@ -53,4 +53,7 @@ export const dashboardAPI = {
   stats() {
     return api.get('/dashboard/stats')
   },
+  trend(days = 7) {
+    return api.get('/dashboard/trend', { params: { days } })
+  },
 }

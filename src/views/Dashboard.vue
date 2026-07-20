@@ -7,11 +7,7 @@
           <div class="stat-card-left">
             <span class="stat-card-label">{{ card.label }}</span>
             <span class="stat-card-value" ref="countRefs">{{ animatedValues[card.key] }}</span>
-            <span v-if="card.trend !== null" class="stat-card-change" :class="card.trend > 0 ? 'up' : 'down'">
-              <svg viewBox="0 0 12 12" fill="none"><path :d="card.trend > 0 ? 'M6 2v8M3 5l3-3 3 3' : 'M6 10V2M3 7l3 3 3-3'" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              {{ Math.abs(card.trend) }}% 较昨日
-            </span>
-            <div v-if="card.key === 'storage'" class="storage-bar-wrap">
+            <div v-if="card.hasBar" class="storage-bar-wrap">
               <div class="storage-bar">
                 <div class="storage-bar-fill" :style="{ width: storagePct + '%' }"></div>
               </div>
@@ -47,7 +43,7 @@
         <div class="panel-header">
           <h3 class="panel-title">查询趋势</h3>
           <div class="panel-tabs">
-            <button v-for="t in ['7天','30天']" :key="t" :class="['panel-tab', { active: trendTab === t }]" @click="trendTab = t">{{ t }}</button>
+            <button v-for="t in ['7天','30天']" :key="t" :class="['panel-tab', { active: trendTab === t }]" @click="trendTab = t; loadTrend(t === '7天' ? 7 : 30)">{{ t }}</button>
           </div>
         </div>
         <div class="panel-body">
@@ -195,10 +191,10 @@ const hotQuestions = ref([])
 
 // 统计数据
 const statCards = computed(() => [
-  { key: 'kb', label: '知识库总数', value: animatedValues.kb, trend: 12, color: '#00d4ff' },
-  { key: 'doc', label: '文档总量', value: animatedValues.doc.toLocaleString(), trend: 8, color: '#4a8cf7' },
-  { key: 'query', label: '今日查询', value: animatedValues.query.toLocaleString(), trend: 23, color: '#8b5cf6' },
-  { key: 'storage', label: '存储用量', value: formatSize(animatedValues.storage), trend: null, color: '#22c55e' },
+  { key: 'kb', label: '知识库总数', value: animatedValues.kb, color: '#00d4ff' },
+  { key: 'doc', label: '文档总量', value: animatedValues.doc.toLocaleString(), color: '#4a8cf7' },
+  { key: 'query', label: '今日查询', value: animatedValues.query.toLocaleString(), color: '#8b5cf6' },
+  { key: 'storage', label: '存储用量', value: formatSize(animatedValues.storage), color: '#22c55e', hasBar: true },
 ])
 
 // 数字动画
@@ -221,6 +217,7 @@ const loadStats = async () => {
       dashboardAPI.stats(),
       kbAPI.list(),
       docAPI.list(),
+      loadTrend(trendTab.value === '7天' ? 7 : 30),
     ])
     const s = statsRes.data
     animateValue('kb', s.kb_count || 0)
@@ -255,18 +252,26 @@ const loadStats = async () => {
   } catch (e) { console.warn('Dashboard load error', e) }
 }
 
-// 趋势图
-const trend7 = [142, 218, 306, 275, 448, 523, 486]
-const trend30 = Array.from({length:30}, (_,i) => Math.round(180 + Math.sin(i/4)*120 + Math.cos(i/7)*80 + i*12 + (i%3)*20))
-const trendData = computed(() => trendTab.value === '7天' ? trend7 : trend30)
+// 趋势图 - 从 API 获取真实数据
+const trendDataRaw = ref([])
+const trendLabelsRaw = ref([])
+const trendData = computed(() => trendDataRaw.value.length ? trendDataRaw.value : [0, 0, 0, 0, 0, 0, 0])
+const trendLabels = computed(() => trendLabelsRaw.value.length ? trendLabelsRaw.value : ['周一','周二','周三','周四','周五','周六','周日'])
 
-const trendLabels = computed(() => trendTab.value === '7天'
-  ? ['周一','周二','周三','周四','周五','周六','周日']
-  : trend30.map((_,i) => (i+1) % 3 === 0 ? `${i+1}` : ''))
+const loadTrend = async (days = 7) => {
+  try {
+    const { data } = await dashboardAPI.trend(days)
+    trendDataRaw.value = data.map(d => d.count)
+    trendLabelsRaw.value = data.map(d => d.label)
+  } catch (e) { console.warn('Trend load error', e) }
+}
 
 const trendPoints = computed(() => {
   const W = 560; const H = 150; const L = 44; const R = 20; const T = 12; const B = 20
-  const data = trendData.value; const max = Math.max(...data) * 1.1; const min = 0
+  const data = trendData.value
+  // 用 yLabels 的刻度作为图表上限，保证点位和 Y 轴对齐
+  const max = yLabels.value[0] || Math.max(...data, 1) * 1.1
+  const min = 0
   const range = max - min || 1
   return data.map((v, i) => ({
     x: L + (i / Math.max(data.length - 1, 1)) * (W - L - R),
@@ -282,8 +287,13 @@ const areaPath = computed(() => {
 })
 
 const yLabels = computed(() => {
-  const max = Math.max(...trendData.value) * 1.1
-  const step = Math.ceil(max / 4 / 50) * 50 || 100
+  const max = Math.max(...trendData.value, 1) * 1.1
+  // 小数值时用更细的刻度
+  let step
+  if (max <= 5) step = 1
+  else if (max <= 20) step = 5
+  else if (max <= 100) step = 20
+  else step = Math.ceil(max / 4 / 50) * 50
   return [step*4, step*3, step*2, step, 0]
 })
 
@@ -316,10 +326,6 @@ onMounted(loadStats)
 .stat-card-left { display: flex; flex-direction: column; }
 .stat-card-label { font-size: 12.5px; color: rgba(255,255,255,.35); margin-bottom: 6px; }
 .stat-card-value { font-size: 28px; font-weight: 800; color: #f0f4ff; letter-spacing: -1px; line-height: 1; margin-bottom: 8px; }
-.stat-card-change { display: inline-flex; align-items: center; gap: 3px; font-size: 11.5px; font-weight: 600; padding: 2px 8px; border-radius: 12px; width: fit-content; }
-.stat-card-change svg { width: 10px; height: 10px; }
-.stat-card-change.up { color: #4ade80; background: rgba(34,197,94,.08); }
-.stat-card-change.down { color: #f87171; background: rgba(239,68,68,.08); }
 .stat-card-icon { width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .stat-card-icon svg { width: 22px; height: 22px; }
 .stat-card.kb .stat-card-icon { background: rgba(0,212,255,.1); color: #00d4ff; }

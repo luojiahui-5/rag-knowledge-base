@@ -66,3 +66,16 @@ class DocumentChunk(Base):
 
     # Relations
     document: Mapped["Document"] = relationship(back_populates="chunks")
+
+
+class QueryLog(Base):
+    """搜索查询日志"""
+    __tablename__ = "query_logs"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
+    query_text: Mapped[str] = mapped_column(String(500), nullable=False)
+    kb_ids: Mapped[Optional[str]] = mapped_column(String(200), nullable=True)
+    result_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    latency_ms: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
