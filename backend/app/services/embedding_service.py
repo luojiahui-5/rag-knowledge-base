@@ -16,13 +16,16 @@ def _get_model():
     # 国内环境优先使用 modelscope 镜像
     os.environ.setdefault("HF_ENDPOINT", "https://hf-mirror.com")
 
-    from sentence_transformers import SentenceTransformer
+    try:
+        from sentence_transformers import SentenceTransformer
+    except ImportError:
+        raise RuntimeError("sentence-transformers 未安装，仅支持关键词检索")
 
     # 按顺序尝试加载模型（从小到大）
     candidates = [
-        "BAAI/bge-small-zh-v1.5",   # 最小，~100MB，下载快
-        "BAAI/bge-large-zh-v1.5",   # 标准中文 embedding
-        "BAAI/bge-m3",              # 多语言，1024d
+        "BAAI/bge-small-zh-v1.5",
+        "BAAI/bge-large-zh-v1.5",
+        "BAAI/bge-m3",
     ]
 
     for model_name in candidates:
@@ -36,7 +39,7 @@ def _get_model():
             print(f"[Embedding] {model_name} 加载失败: {e}")
             continue
 
-    raise RuntimeError("所有 Embedding 模型加载失败，请检查网络（需要访问 huggingface.co 或 hf-mirror.com）")
+    raise RuntimeError("所有 Embedding 模型加载失败")
 
 
 def _extract_keywords(text: str, min_len: int = 2) -> list[str]:

@@ -49,11 +49,10 @@ async def search(
     keyword_chunks = keyword_result.scalars().all()
     print(f"[Search] keyword_chunks: {len(keyword_chunks)}")
 
-    # ========== 3. 向量语义检索（本地 BGE-M3 Embedding + 余弦相似度） ==========
+    # ========== 3. 向量语义检索（可选，模型未安装时回退到关键词） ==========
     vector_chunks = []
     try:
         query_vec = embed_text(req.query)
-        # 加载所有 chunks 做向量相似度计算
         all_sql = select(DocumentChunk)
         if conditions:
             all_sql = all_sql.where(*conditions)
@@ -63,14 +62,12 @@ async def search(
         scored = []
         for chunk in all_chunks:
             if not hasattr(chunk, '_cached_vec'):
-                # 首次查询时没有向量缓存，先用关键词结果
                 break
             sim = cosine_similarity(query_vec, chunk._cached_vec)
             scored.append((chunk, sim))
         scored.sort(key=lambda x: x[1], reverse=True)
         vector_chunks = [c for c, _ in scored[:settings.VECTOR_TOP_K]]
-    except Exception as e:
-        # Embedding 模型未加载或出错时，回退到仅关键词
+    except Exception:
         vector_chunks = keyword_chunks[:settings.VECTOR_TOP_K] if keyword_chunks else []
 
     # 合并结果
