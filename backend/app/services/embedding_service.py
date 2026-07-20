@@ -1,6 +1,5 @@
 """本地 Embedding 向量化服务（国内镜像优先）"""
 import os
-import numpy as np
 from ..core.config import get_settings
 
 settings = get_settings()
@@ -93,6 +92,7 @@ def embed_texts(texts: list[str], batch_size: int = 32) -> list[list[float]]:
 
 
 def cosine_similarity(a: list[float], b: list[float]) -> float:
+    import numpy as np
     a = np.array(a)
     b = np.array(b)
     return float(np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b)))
