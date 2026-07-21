@@ -29,18 +29,23 @@ async def search(
     if req.kb_ids:
         conditions.append(DocumentChunk.kb_id.in_(req.kb_ids))
 
-    # ========== 2. 关键词检索（多关键词 LIKE 匹配） ==========
+    # ========== 2. 关键词检索（智能关键词匹配） ==========
     keyword_sql = select(DocumentChunk)
     if req.query:
-        from sqlalchemy import or_
-        # 中文：将整个查询作为 LIKE 模式 + 提取所有 2-gram 子串做 OR 匹配
-        like_filters = [DocumentChunk.content.like(f"%{req.query}%")]
-        if len(req.query) >= 3:
-            for i in range(len(req.query) - 1):
-                sub = req.query[i:i+2]
-                if len(sub) >= 2:
-                    like_filters.append(DocumentChunk.content.like(f"%{sub}%"))
-        keyword_sql = keyword_sql.where(or_(*like_filters[:10]))
+        from sqlalchemy import or_, and_
+        # 提取有意义的词（长度>=2的非纯标点词）
+        import re
+        words = re.findall(r'[一-鿿\w]+', req.query)
+        meaningful = [w for w in words if len(w) >= 2]
+        if meaningful:
+            # 要求至少匹配一半以上的关键词（提高精度）
+            match_count = max(1, len(meaningful) // 2 + 1)
+            # 对每个关键词做LIKE匹配，累加匹配分数
+            keyword_sql = select(DocumentChunk)
+            like_conditions = [DocumentChunk.content.like(f"%{w}%") for w in meaningful]
+            keyword_sql = keyword_sql.where(or_(*like_conditions))
+        else:
+            keyword_sql = keyword_sql.where(DocumentChunk.content.like(f"%{req.query}%"))
     if conditions:
         keyword_sql = keyword_sql.where(*conditions)
     keyword_sql = keyword_sql.limit(settings.KEYWORD_TOP_K)
