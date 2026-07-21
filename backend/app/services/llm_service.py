@@ -36,7 +36,7 @@ async def generate_answer(query: str, context: str, sources: list[dict]) -> str:
 
 请根据以上参考资料回答问题："""
 
-    async with httpx.AsyncClient(timeout=60.0) as client:
+    async with httpx.AsyncClient(timeout=120.0) as client:
         try:
             resp = await client.post(
                 DEEPSEEK_CHAT,

@@ -328,14 +328,13 @@ const scoreClass = (s) => {
 </script>
 
 <style scoped>
-.page { padding: 24px; height: calc(100vh - 80px); }
+.page { padding: 24px; height: calc(100vh - 80px); overflow: hidden; }
 .ask-layout { display: flex; gap: 16px; height: 100%; }
 
 /* ===== 对话区 ===== */
 .chat-main { flex: 1; display: flex; flex-direction: column; background: rgba(255,255,255,.015); border: 1px solid rgba(255,255,255,.05); border-radius: 14px; overflow: hidden; min-width: 0; }
-.chat-messages { flex: 1; overflow-y: auto; padding: 24px; }
-.chat-messages::-webkit-scrollbar { width: 4px; }
-.chat-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,.06); border-radius: 2px; }
+.chat-messages { flex: 1; overflow-y: auto; padding: 24px; scrollbar-width: none; }
+.chat-messages::-webkit-scrollbar { width: 0; }
 
 /* 欢迎态 */
 .welcome { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center; padding: 40px 20px; }
@@ -410,9 +409,8 @@ const scoreClass = (s) => {
 .footer-hint { font-size: 11px; color: rgba(255,255,255,.15); }
 
 /* ===== 右侧面板 ===== */
-.side-panel { width: 260px; flex-shrink: 0; display: flex; flex-direction: column; gap: 16px; overflow-y: auto; }
-.side-panel::-webkit-scrollbar { width: 3px; }
-.side-panel::-webkit-scrollbar-thumb { background: rgba(255,255,255,.05); border-radius: 2px; }
+.side-panel { width: 260px; flex-shrink: 0; display: flex; flex-direction: column; gap: 16px; overflow-y: auto; scrollbar-width: none; }
+.side-panel::-webkit-scrollbar { width: 0; }
 .panel-section { background: rgba(255,255,255,.015); border: 1px solid rgba(255,255,255,.04); border-radius: 12px; padding: 16px; }
 .panel-title { font-size: 12px; font-weight: 700; color: rgba(255,255,255,.35); text-transform: uppercase; letter-spacing: 1px; margin: 0 0 12px; }
 .panel-empty { text-align: center; padding: 20px 0; font-size: 11px; color: rgba(255,255,255,.15); }
@@ -444,8 +442,7 @@ const scoreClass = (s) => {
 .popup-meta { font-size: 11px; color: rgba(255,255,255,.3); flex-shrink: 0; }
 .popup-close { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; background: none; border: none; color: rgba(255,255,255,.3); font-size: 20px; cursor: pointer; border-radius: 6px; flex-shrink: 0; }
 .popup-close:hover { background: rgba(255,255,255,.05); color: rgba(255,255,255,.6); }
-.popup-body { flex: 1; overflow-y: auto; padding: 16px 20px; }
-.popup-body::-webkit-scrollbar { width: 4px; }
-.popup-body::-webkit-scrollbar-thumb { background: rgba(255,255,255,.06); border-radius: 2px; }
+.popup-body { flex: 1; overflow-y: auto; padding: 16px 20px; scrollbar-width: none; }
+.popup-body::-webkit-scrollbar { width: 0; }
 .popup-content { font-size: 13px; color: rgba(255,255,255,.6); line-height: 1.8; white-space: pre-wrap; word-break: break-all; margin: 0; font-family: inherit; }
 </style>
