@@ -3,7 +3,7 @@ from functools import lru_cache
 
 
 class Settings(BaseSettings):
-    APP_NAME: str = "企业级智能知识库系统"
+    APP_NAME: str = "智能知识库系统"
     APP_VERSION: str = "1.0.0"
     DEBUG: bool = True
 

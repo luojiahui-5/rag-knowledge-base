@@ -12,7 +12,7 @@
             <defs><linearGradient id="logoGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#00d4ff"/><stop offset="100%" stop-color="#4a6cf7"/></linearGradient></defs>
           </svg>
         </div>
-        <span v-show="!sidebarCollapsed" class="brand-name">企业级智能知识库系统</span>
+        <span v-show="!sidebarCollapsed" class="brand-name">智能知识库系统</span>
       </div>
 
       <!-- 导航菜单 -->
@@ -175,13 +175,7 @@ const goTo = (path) => {
 
 // ===== 通知 =====
 const showNotify = ref(false)
-const notifications = ref([
-  { id: 1, type: 'doc', icon: '📄', title: '「系统架构设计文档 V3.2」索引完成', time: '10 分钟前', read: false },
-  { id: 2, type: 'user', icon: '👤', title: '新用户「李四」已注册，等待分配权限', time: '1 小时前', read: false },
-  { id: 3, type: 'warn', icon: '⚠️', title: '「数据库备份方案.docx」解析失败，请检查文件格式', time: '3 小时前', read: false },
-  { id: 4, type: 'system', icon: '🔧', title: '系统已升级至 v1.0.0，新增智能问答功能', time: '1 天前', read: true },
-  { id: 5, type: 'doc', icon: '📄', title: '「Q3 产品迭代计划」已上传至产品需求文档库', time: '2 天前', read: true },
-])
+const notifications = ref([])
 const unreadCount = computed(() => notifications.value.filter(n => !n.read).length)
 const markAllRead = () => { notifications.value.forEach(n => n.read = true) }
 

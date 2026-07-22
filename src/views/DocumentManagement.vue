@@ -380,8 +380,23 @@ const batchDelete = async () => {
   }
 }
 
-const downloadDoc = (doc) => {
-  window.open(`/api/v1/documents/${doc.id}/download`, '_blank')
+const downloadDoc = async (doc) => {
+  try {
+    const token = sessionStorage.getItem('token')
+    const resp = await fetch(`/api/v1/documents/${doc.id}/download`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    if (!resp.ok) throw new Error('下载失败')
+    const blob = await resp.blob()
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = doc.name || 'download'
+    a.click()
+    URL.revokeObjectURL(url)
+  } catch (e) {
+    alert('下载失败: ' + e.message)
+  }
 }
 
 const previewDoc = async (doc) => {

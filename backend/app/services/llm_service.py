@@ -7,7 +7,7 @@ settings = get_settings()
 DEEPSEEK_BASE = "https://api.deepseek.com"
 DEEPSEEK_CHAT = f"{DEEPSEEK_BASE}/v1/chat/completions"
 
-SYSTEM_PROMPT = """你是一个企业级智能知识库助手。严格按以下规则回答：
+SYSTEM_PROMPT = """你是一个智能知识库助手。严格按以下规则回答：
 
 1. 【最重要】只使用参考资料中明确包含的信息，绝对不要编造或猜测
 2. 如果资料中没有答案，直接说"根据现有资料未找到相关信息"，不要补充任何内容

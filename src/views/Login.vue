@@ -26,7 +26,7 @@
             </defs>
           </svg>
         </div>
-        <h1 class="brand-title">企业级智能知识库系统</h1>
+        <h1 class="brand-title">智能知识库系统</h1>
         <p class="brand-subtitle">基于 RAG 技术的新一代智能知识管理平台</p>
       </div>
 
@@ -83,7 +83,7 @@
           </div>
           <div class="feature-text">
             <div class="feature-title">安全可靠</div>
-            <div class="feature-desc">企业级权限管控</div>
+            <div class="feature-desc">多层权限管控</div>
           </div>
         </div>
       </div>
@@ -118,7 +118,7 @@
 
       <div class="login-card">
         <h2 class="login-title">欢迎登录</h2>
-        <p class="login-subtitle">请使用您的企业账号登录系统</p>
+        <p class="login-subtitle">请使用您的账号登录系统</p>
 
         <div class="login-form">
           <!-- 账号 -->
@@ -186,7 +186,7 @@
       </div>
 
       <!-- 版权 -->
-      <p class="copyright">© 2025 企业级智能知识库系统. All rights reserved.</p>
+      <p class="copyright">© 2025 智能知识库系统. All rights reserved.</p>
     </div>
   </div>
 </template>
